@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="images/favicon.png"/>
+  <title>Gâteaux — Sabor Criola — Sabor Criola</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Nunito:wght@300;400;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,500&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --navy:#1B2F6E;--navy-dark:#0F1D47;--navy-mid:#243882;
+      --red:#D42B2B;--red-light:#E05050;
+      --gold:#D4A52A;--gold-light:#E8C253;
+      --green:#006B3F;--green-light:#1A8A56;
+      --white:#FAFAF8;--off-white:#F4F2EC;--light-blue:#EEF1FA;
+      --text:#1A1A2E;--text-soft:#3D4870;
+      --accent:#D42B2B;
+      --font-display:'Playfair Display',Georgia,serif;
+      --font-italic:'Cormorant Garamond',Georgia,serif;
+      --font-body:'Nunito',sans-serif;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--font-body);background:var(--white);color:var(--text);overflow-x:hidden;}
+    img{display:block;width:100%;}
+    a{text-decoration:none;color:inherit;}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0;display:flex;align-items:stretch;justify-content:space-between;background:var(--navy-dark) url('images/fond_navbar.png') center/cover;box-shadow:0 2px 16px rgba(0,0,0,0.25);transition:box-shadow 0.4s;}
+    nav.scrolled{box-shadow:0 3px 30px rgba(27,47,110,0.20);}
+    nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--red) 0%,var(--red) 33%,var(--gold) 33%,var(--gold) 66%,var(--navy) 66%,var(--navy) 100%);}
+    .nav-logo{display:flex;align-items:center;gap:0.9rem;background:var(--navy-dark);padding:0.4rem 3rem 0.4rem 1.6rem;clip-path:polygon(0 0,calc(100% - 20px) 0,100% 100%,0 100%);flex-shrink:0;}
+    .nav-logo img{width:62px;height:62px;object-fit:contain;filter:drop-shadow(0 0 4px rgba(255,255,255,1)) drop-shadow(0 0 8px rgba(255,255,255,0.8));}
+    .nav-logo-text{font-family:var(--font-display);font-size:1.25rem;font-weight:900;color:var(--white);line-height:1.1;white-space:nowrap;}
+    .nav-logo-text span{display:block;font-size:0.62rem;font-family:var(--font-body);font-weight:700;letter-spacing:0.13em;text-transform:uppercase;color:var(--gold);margin-top:2px;}
+    .nav-links{display:flex;gap:1.8rem;align-items:center;padding:0 2rem;}
+    .nav-links a{font-size:0.76rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.88);position:relative;transition:color 0.3s;}
+    .nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--gold-light);transition:width 0.3s;}
+    .nav-links a:hover{color:var(--gold-light);}
+    .nav-links a:hover::after{width:100%;}
+    .nav-cta{background:var(--red)!important;color:var(--white)!important;padding:0.55rem 1.3rem!important;border-radius:2px!important;}
+    .nav-cta:hover{background:var(--gold)!important;color:var(--navy-dark)!important;}
+    .nav-cta::after{display:none!important;}
+    .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:0 1.5rem;align-self:center;}
+    .burger span{display:block;width:24px;height:2px;background:rgba(255,255,255,0.85);transition:0.3s;}
+    #mobileMenu{display:none;position:fixed;inset:0;z-index:199;background:var(--navy-dark);flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;}
+    #mobileMenu a{font-family:var(--font-display);font-size:2rem;font-weight:700;color:var(--white);transition:color 0.2s;}
+    #mobileMenu a:hover{color:var(--gold);}
+
+    /* PAGE HERO */
+    .page-hero{
+      padding:9rem 0 5rem;
+      background: url('images/hero_page_gateaux.png') center/cover no-repeat;
+      background-color:#3D0000;
+      background-attachment:scroll;
+      position:relative;overflow:hidden;
+    }
+    .page-hero::before{content:'';position:absolute;inset:0;pointer-events:none;
+      background:
+        linear-gradient(to bottom,rgba(0,0,0,0.58) 0%,rgba(0,0,0,0.28) 55%,rgba(0,0,0,0.08) 100%),
+        radial-gradient(2px 2px at 10% 20%,rgba(212,165,42,0.5) 0%,transparent 100%),
+        radial-gradient(2px 2px at 85% 15%,rgba(212,165,42,0.4) 0%,transparent 100%),
+        radial-gradient(1px 1px at 50% 80%,rgba(212,165,42,0.3) 0%,transparent 100%);
+    }
+    .page-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:var(--accent);}
+    .page-hero-inner{max-width:1200px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem);position:relative;z-index:1;}
+    .breadcrumb{display:flex;align-items:center;gap:0.6rem;font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.88);margin-bottom:1.5rem;text-shadow:0 1px 6px rgba(0,0,0,0.7);}
+    .breadcrumb a{color:var(--gold-light);transition:color 0.2s;text-shadow:0 1px 6px rgba(0,0,0,0.7);}
+    .breadcrumb a:hover{color:#fff;}
+    .breadcrumb .sep{color:rgba(255,255,255,0.5);}
+    .page-hero-tag{display:inline-flex;align-items:center;gap:0.6rem;background:rgba(0,0,0,0.38);border:1px solid rgba(212,165,42,0.55);padding:0.35rem 1rem;border-radius:100px;font-size:0.68rem;font-weight:700;letter-spacing:0.13em;text-transform:uppercase;color:var(--gold-light);margin-bottom:1.2rem;text-shadow:0 1px 4px rgba(0,0,0,0.6);}
+    .page-title{font-family:var(--font-display);font-size:clamp(2.8rem,6vw,5rem);font-weight:900;color:#fff;line-height:1.0;margin-bottom:1rem;text-shadow:0 3px 18px rgba(0,0,0,0.75),0 1px 6px rgba(0,0,0,0.55);}
+    .page-title .accent{color:var(--gold-light);font-style:italic;font-weight:700;}
+    .page-subtitle{font-family:var(--font-italic);font-style:italic;font-size:clamp(1.1rem,2vw,1.4rem);font-weight:300;color:rgba(255,255,255,0.93);line-height:1.7;max-width:580px;text-shadow:0 2px 10px rgba(0,0,0,0.7);}
+    .page-wave{position:absolute;bottom:-1px;left:0;right:0;}
+
+    /* GALLERY */
+    .gallery-section{padding:5rem 0;background:var(--white);}
+    .container{max-width:1260px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem);}
+    .gallery-intro{max-width:680px;margin:0 auto 3.5rem;text-align:center;}
+    .gallery-intro-label{font-size:0.7rem;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem;}
+    .gallery-intro-title{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:var(--navy);margin-bottom:1rem;}
+    .gallery-intro-title em{font-style:italic;color:var(--accent);}
+    .gallery-intro-text{font-size:1rem;line-height:1.75;color:var(--text-soft);}
+
+    .gallery-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      grid-auto-rows:270px;
+      gap:1rem;
+    }
+    .gi-1{grid-column:1/2;grid-row:1/3;}
+    .gi-2{grid-column:2/4;grid-row:1/2;}
+    .gi-3{grid-column:2/3;grid-row:2/3;}
+    .gi-4{grid-column:3/4;grid-row:2/3;}
+    .gi-5{grid-column:1/3;grid-row:3/4;}
+    .gi-6{grid-column:3/4;grid-row:3/4;}
+
+    .gi-5{grid-column:1/2;grid-row:3/4;}
+    .gi-6{grid-column:2/4;grid-row:3/4;}
+    .gallery-item{border-radius:8px;overflow:hidden;position:relative;box-shadow:0 2px 16px rgba(139,16,16,0.08);transition:transform 0.35s cubic-bezier(.23,1,.32,1),box-shadow 0.35s;}
+    .gallery-item:not(.empty){cursor:pointer;}
+    .gallery-item:not(.empty):hover{transform:translateY(-4px);box-shadow:0 18px 44px rgba(139,16,16,0.15);}
+    .gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s cubic-bezier(.23,1,.32,1);}
+    .gallery-item:hover img{transform:scale(1.05);}
+    .gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(80,8,8,0.78) 0%,transparent 55%);display:flex;align-items:flex-end;padding:1.4rem;opacity:0;transition:opacity 0.35s;}
+    .gallery-item:hover .gallery-overlay{opacity:1;}
+    .gallery-caption{font-family:var(--font-display);font-style:italic;font-size:1rem;font-weight:700;color:var(--white);}
+    .gallery-item.empty{background:var(--off-white);border:2px dashed rgba(212,43,43,0.15);box-shadow:none;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.5rem;}
+    .gallery-item.empty:hover{transform:none;box-shadow:none;}
+    .empty-icon{font-size:2.2rem;opacity:0.18;}
+    .empty-label{font-size:0.68rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--navy);opacity:0.25;}
+
+    /* PRODUCTS LIST */
+    .products-section{padding:4rem 0 5rem;background:var(--off-white);}
+    .products-title{font-family:var(--font-display);font-size:clamp(1.5rem,3vw,2rem);font-weight:900;color:var(--navy);margin-bottom:2rem;}
+    .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem;}
+    .product-item{background:var(--white);border-radius:6px;padding:1.4rem 1.6rem;display:flex;align-items:flex-start;gap:1rem;border-left:3px solid var(--accent);box-shadow:0 2px 12px rgba(27,47,110,0.06);transition:transform 0.3s,box-shadow 0.3s;}
+    .product-item:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(27,47,110,0.12);}
+    .product-emoji{font-size:1.8rem;flex-shrink:0;}
+    .product-name{font-family:var(--font-display);font-size:1rem;font-weight:700;color:var(--navy);margin-bottom:0.3rem;}
+    .product-desc{font-size:0.82rem;color:var(--text-soft);line-height:1.5;}
+
+    /* CTA BAND */
+    .cta-band{background:var(--navy-dark);padding:4rem 0;text-align:center;position:relative;overflow:hidden;}
+    .cta-band::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 100%,rgba(212,165,42,0.12),transparent 65%);pointer-events:none;}
+    .cta-band-title{font-family:var(--font-display);font-size:clamp(1.6rem,3vw,2.5rem);font-weight:900;color:var(--white);margin-bottom:0.8rem;}
+    .cta-band-title em{font-style:italic;color:var(--gold-light);}
+    .cta-band-sub{font-family:var(--font-italic);font-style:italic;font-size:1.1rem;color:rgba(250,250,248,0.6);margin-bottom:2rem;}
+    .btn-gold{display:inline-flex;align-items:center;gap:0.6rem;background:var(--gold);color:var(--navy-dark);font-family:var(--font-body);font-size:0.82rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:1rem 2.2rem;border-radius:2px;transition:background 0.3s,transform 0.2s;}
+    .btn-gold:hover{background:var(--white);transform:translateY(-2px);}
+    .btn-back{display:inline-flex;align-items:center;gap:0.6rem;background:transparent;color:rgba(250,250,248,0.6);font-family:var(--font-body);font-size:0.8rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:1rem 1.8rem;border:1.5px solid rgba(250,250,248,0.2);border-radius:2px;margin-left:1rem;transition:border-color 0.3s,color 0.3s;}
+    .btn-back:hover{border-color:var(--gold);color:var(--gold);}
+
+    /* FOOTER */
+    footer{background:var(--navy-dark);padding:2.5rem 0 0;}
+    .footer-stripe{height:5px;background:linear-gradient(90deg,var(--red) 0%,var(--red) 33.3%,var(--white) 33.3%,var(--white) 66.6%,var(--navy) 66.6%,var(--navy) 100%);margin-bottom:2rem;}
+    .footer-bottom-simple{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:0 clamp(1.5rem,5vw,4rem) 1.5rem;}
+    .footer-brand-sm{display:flex;align-items:center;gap:0.7rem;}
+    .footer-brand-sm img{width:42px;height:42px;object-fit:contain;}
+    .footer-brand-sm span{font-family:var(--font-display);font-size:1rem;font-weight:900;color:var(--white);}
+    .footer-links-sm{display:flex;gap:1.5rem;flex-wrap:wrap;}
+    .footer-links-sm a{font-size:0.78rem;color:rgba(250,250,248,0.45);font-weight:600;transition:color 0.2s;}
+    .footer-links-sm a:hover{color:var(--white);}
+    .footer-copy-sm{font-size:0.72rem;color:rgba(250,250,248,0.25);}
+
+    /* REVEAL */
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}
+    .reveal.visible{opacity:1;transform:none;}
+    .reveal-delay-1{transition-delay:0.1s;}
+    .reveal-delay-2{transition-delay:0.2s;}
+    .reveal-delay-3{transition-delay:0.3s;}
+
+    /* RESPONSIVE */
+    @media(max-width:768px){
+      .nav-links{display:none;}.burger{display:flex;}
+      .page-hero{padding:7rem 0 3.5rem;background-position:center center;}
+      .gallery-grid{grid-template-columns:1fr 1fr;grid-auto-rows:200px;}
+      .gi-1,.gi-2,.gi-3,.gi-4,.gi-5,.gi-6,.gi-7,.gi-8,.gi-9{grid-column:auto;grid-row:auto;}
+      .footer-bottom-simple{flex-direction:column;align-items:flex-start;}
+    }
+    @media(max-width:480px){
+      .gallery-grid{grid-template-columns:1fr;grid-auto-rows:220px;}
+      .products-grid{grid-template-columns:1fr;}
+      .btn-back{margin-left:0;margin-top:0.8rem;}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="images/logo.png" alt="Sabor Criola"/>
+    <div class="nav-logo-text">Sabor Criola<span>Serviço Traiteur</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html#histoire">Notre histoire</a></li>
+    <li><a href="index.html#creations">Nos créations</a></li>
+    <li><a href="index.html#commande">Commander</a></li>
+    <li><a href="index.html#contact" class="nav-cta">Contact</a></li>
+  </ul>
+  <div class="burger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+<div id="mobileMenu">
+  <a href="index.html#histoire" onclick="closeMenu()">Notre histoire</a>
+  <a href="index.html#creations" onclick="closeMenu()">Nos créations</a>
+  <a href="index.html#commande" onclick="closeMenu()">Commander</a>
+  <a href="index.html#contact" onclick="closeMenu()" style="color:var(--gold)">Contact</a>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb">
+      <a href="index.html">Accueil</a>
+      <span class="sep">/</span>
+      <span>Gâteaux</span>
+    </div>
+    <div class="page-hero-tag">🎂 Créations personnalisées sur commande</div>
+    <h1 class="page-title">Gâteaux <span class="accent">sur mesure</span></h1>
+    <p class="page-subtitle">De l'anniversaire au mariage, chaque gâteau est une création unique façonnée selon vos envies, vos couleurs et votre occasion.</p>
+  </div>
+  <div class="page-wave">
+    <svg viewBox="0 0 1440 55" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,28 C360,56 1080,0 1440,28 L1440,55 L0,55 Z" fill="#FAFAF8"/>
+    </svg>
+  </div>
+</div>
+
+<!-- GALLERY -->
+<section class="gallery-section">
+  <div class="container">
+    <div class="gallery-intro reveal">
+      <div class="gallery-intro-label">Nos réalisations</div>
+      <h2 class="gallery-intro-title">Chaque gâteau, <em>une histoire unique</em></h2>
+      <p class="gallery-intro-text">Nous créons des gâteaux personnalisés pour tous les moments de vie. Vous nous donnez l'idée, on s'occupe du reste.</p>
+    </div>
+    <div class="gallery-grid">
+
+      <!-- bola : tall portrait (2 lignes) -->
+      <div class="gallery-item gi-1 reveal">
+        <img src="images/bola.png" alt="Bolas de berlim — boules sucrées"/>
+        <div class="gallery-overlay"><div class="gallery-caption">Bolas de berlim</div></div>
+      </div>
+
+      <!-- donete : large paysage -->
+      <div class="gallery-item gi-2 reveal reveal-delay-1">
+        <img src="images/donete.png" alt="Donetes au chocolat"/>
+        <div class="gallery-overlay"><div class="gallery-caption">Donetes au chocolat fondant</div></div>
+      </div>
+
+      <!-- pao_de_coco -->
+      <div class="gallery-item gi-3 reveal reveal-delay-2">
+        <img src="images/pao_de_coco.png" alt="Pão de coco — brioches à la noix de coco"/>
+        <div class="gallery-overlay"><div class="gallery-caption">Pão de coco — brioches coco</div></div>
+      </div>
+      <div class="gallery-item gi-4 reveal reveal-delay-1">
+        <img src="images/gateau_anniversaire.png" alt="Gâteau anniversaire personnalisé Sofia 25 ans"/>
+        <div class="gallery-overlay"><div class="gallery-caption">Gâteau anniversaire sur mesure</div></div>
+      </div>
+
+      <div class="gallery-item gi-5 reveal reveal-delay-2">
+        <img src="images/cupcakes_deco.png" alt="Assortiment de cupcakes décorés"/>
+        <div class="gallery-overlay"><div class="gallery-caption">Assortiment de cupcakes</div></div>
+      </div>
+
+      <div class="gallery-item gi-6 reveal reveal-delay-3">
+        <img src="images/fondant_chocolat.png" alt="Fondant au chocolat cœur coulant"/>
+        <div class="gallery-overlay"><div class="gallery-caption">Fondant chocolat cœur coulant</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products-section">
+  <div class="container">
+    <div class="products-title reveal">Ce que nous proposons</div>
+    <div class="products-grid">
+      <div class="product-item reveal">
+  <div class="product-emoji">🎂</div>
+  <div><div class="product-name">Gâteaux d'anniversaire</div><div class="product-desc">Toutes tailles, tous thèmes, pour les petits comme les grands.</div></div>
+</div>
+<div class="product-item reveal">
+  <div class="product-emoji">💍</div>
+  <div><div class="product-name">Gâteaux de mariage</div><div class="product-desc">Pièces montées élégantes, personnalisées à votre image.</div></div>
+</div>
+<div class="product-item reveal">
+  <div class="product-emoji">🎉</div>
+  <div><div class="product-name">Gâteaux de célébration</div><div class="product-desc">Baptême, communion, diplôme — on marque vos moments importants.</div></div>
+</div>
+<div class="product-item reveal">
+  <div class="product-emoji">🍫</div>
+  <div><div class="product-name">Gâteaux au chocolat</div><div class="product-desc">Fondants, ganaches, décors chocolat travaillés à la main.</div></div>
+</div>
+<div class="product-item reveal">
+  <div class="product-emoji">🌸</div>
+  <div><div class="product-name">Gâteaux décorés</div><div class="product-desc">Fleurs en sucre, modelage, peinture comestible, sur demande.</div></div>
+</div>
+<div class="product-item reveal">
+  <div class="product-emoji">📦</div>
+  <div><div class="product-name">Petits gâteaux / cupcakes</div><div class="product-desc">Assortiments de cupcakes ou mignardises pour buffets et réceptions.</div></div>
+</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-band">
+  <div class="container" style="position:relative;z-index:1;">
+    <div class="cta-band-title">Votre <em>gâteau</em>, votre vision</div>
+    <p class="cta-band-sub">Partagez-nous votre idée et nous la réalisons avec soin.</p>
+    <a href="index.html#contact" class="btn-gold">Passer une commande</a>
+    <a href="index.html#creations" class="btn-back">← Toutes les créations</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-stripe"></div>
+  <div class="footer-bottom-simple">
+    <div class="footer-brand-sm">
+      <img src="images/logo.png" alt="Sabor Criola"/>
+      <span>Sabor Criola</span>
+    </div>
+    <div class="footer-links-sm">
+      <a href="desserts.html">Desserts</a>
+      <a href="gateaux.html">Gâteaux</a>
+      <a href="sales.html">Salés</a>
+      <a href="plats.html">Plats</a>
+      <a href="fruits.html">Fruits</a>
+    </div>
+    <div class="footer-copy-sm">© 2025 Sabor Criola</div>
+  </div>
+</footer>
+
+<script>
+  function toggleMenu(){const m=document.getElementById('mobileMenu');m.style.display=m.style.display==='flex'?'none':'flex';}
+  function closeMenu(){document.getElementById('mobileMenu').style.display='none';}
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>

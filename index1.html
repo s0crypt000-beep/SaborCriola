@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="images/favicon.png"/>
+  <title>Sabor Criola — Especialidades Caboverdianas e Portuguesas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Nunito:wght@300;400;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;1,300;1,500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --navy:       #1B2F6E;
+      --navy-dark:  #0F1D47;
+      --navy-mid:   #243882;
+      --red:        #D42B2B;
+      --red-light:  #E05050;
+      --gold:       #D4A52A;
+      --gold-light: #E8C253;
+      --gold-pale:  #FDF3D6;
+      --green:      #006B3F;
+      --green-light:#1A8A56;
+      --white:      #FAFAF8;
+      --off-white:  #F4F2EC;
+      --light-blue: #EEF1FA;
+      --text:       #1A1A2E;
+      --text-soft:  #3D4870;
+      --font-display:'Playfair Display',Georgia,serif;
+      --font-italic: 'Cormorant Garamond',Georgia,serif;
+      --font-body:   'Nunito',sans-serif;
+      --section-pad: clamp(4rem,8vw,7rem);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{font-family:var(--font-body);background:var(--white);color:var(--text);overflow-x:hidden;}
+    img{display:block;width:100%;}
+    a{text-decoration:none;color:inherit;}
+    ul{list-style:none;}
+
+    /* ===================== NAV ===================== */
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:200;
+      padding:0;
+      display:flex;align-items:stretch;justify-content:space-between;
+      /* Fond blanc : logo toujours parfaitement visible */
+      background:#FFFFFF;
+      box-shadow:0 2px 16px rgba(27,47,110,0.10);
+      transition:box-shadow 0.4s;
+    }
+    nav.scrolled{
+      box-shadow:0 3px 30px rgba(27,47,110,0.20);
+    }
+    /* Filet tricolore (rouge/blanc/bleu) en bas de nav — clin d'œil aux drapeaux */
+    nav::after{
+      content:'';position:absolute;bottom:0;left:0;right:0;height:3px;
+      background:linear-gradient(90deg,
+        var(--red) 0%, var(--red) 33%,
+        var(--gold) 33%, var(--gold) 66%,
+        var(--navy) 66%, var(--navy) 100%
+      );
+    }
+
+    /* Bloc logo : fond navy foncé, découpe diagonale */
+    .nav-logo{
+      display:flex;align-items:center;gap:0.9rem;
+      background:var(--navy-dark);
+      padding:0.4rem 3rem 0.4rem 1.6rem;
+      clip-path:polygon(0 0, calc(100% - 20px) 0, 100% 100%, 0 100%);
+      flex-shrink:0;
+    }
+    /* Halo blanc autour du logo pour le faire ressortir sur fond navy */
+    .nav-logo img{
+      width:66px;height:66px;object-fit:contain;
+      filter:
+        drop-shadow(0 0 4px rgba(255,255,255,1))
+        drop-shadow(0 0 8px rgba(255,255,255,0.8))
+        drop-shadow(0 0 2px rgba(255,255,255,0.9));
+    }
+    .nav-logo-text{
+      font-family:var(--font-display);font-size:1.3rem;font-weight:900;
+      color:var(--white);line-height:1.1;white-space:nowrap;
+    }
+    .nav-logo-text span{
+      display:block;font-size:0.62rem;font-family:var(--font-body);
+      font-weight:700;letter-spacing:0.14em;text-transform:uppercase;
+      color:var(--gold);margin-top:2px;
+    }
+
+    /* Liens nav sur fond blanc → texte navy */
+    .nav-links{display:flex;gap:1.8rem;align-items:center;padding:0 2rem;}
+    .nav-links a{
+      font-size:0.76rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+      color:var(--navy);position:relative;transition:color 0.3s;
+    }
+    .nav-links a::after{
+      content:'';position:absolute;bottom:-3px;left:0;
+      width:0;height:2px;background:var(--red);transition:width 0.3s;
+    }
+    .nav-links a:hover{color:var(--red);}
+    .nav-links a:hover::after{width:100%;}
+
+    .nav-cta{background:var(--red)!important;color:var(--white)!important;padding:0.55rem 1.3rem!important;border-radius:2px!important;}
+    .nav-cta:hover{background:var(--navy)!important;color:var(--white)!important;}
+    .nav-cta::after{display:none!important;}
+
+    .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:0 1.5rem;align-self:center;}
+    .burger span{display:block;width:24px;height:2px;background:var(--navy);transition:0.3s;}
+
+    #mobileMenu{
+      display:none;position:fixed;inset:0;z-index:199;
+      background:var(--navy-dark);
+      flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
+    }
+    #mobileMenu a{font-family:var(--font-display);font-size:2rem;font-weight:700;color:var(--white);transition:color 0.2s;}
+    #mobileMenu a:hover{color:var(--gold);}
+
+    /* ===================== HERO — Photo parallax ===================== */
+    #hero{
+      min-height:100vh;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      /* Photo en fond avec effet parallax (background-attachment:fixed) */
+      background-image: url('images/hero_bg.png');
+      background-size: cover;
+      background-position: center center;
+      background-attachment: fixed; /* ← effet parallax : image fixe au scroll */
+      background-repeat: no-repeat;
+    }
+
+    /* Overlay multicouche :
+       - Couche sombre générale pour la lisibilité du texte
+       - Dégradé latéral : plus opaque sur les côtés (texte), plus transparent au centre (logo)
+       - Touche de couleur navy pour harmoniser avec la charte */
+    #hero::before{
+      content:'';
+      position:absolute;inset:0;
+      pointer-events:none;
+      background:
+        /* Centre transparent pour laisser voir le logo sur son cercle blanc */
+        radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.10) 0%, rgba(0,0,0,0.45) 55%, rgba(9,22,55,0.75) 100%),
+        /* Renfort navy sur les bords gauche/droit où se trouve le texte */
+        linear-gradient(90deg,
+          rgba(9,22,55,0.55) 0%,
+          rgba(9,22,55,0.10) 30%,
+          rgba(9,22,55,0.10) 70%,
+          rgba(9,22,55,0.55) 100%
+        );
+      z-index:1;
+    }
+
+    /* Filet tricolore bas */
+    #hero::after{
+      content:'';position:absolute;bottom:0;left:0;right:0;height:4px;
+      background:linear-gradient(90deg,var(--red) 0%,var(--red) 33%,var(--gold) 33%,var(--gold) 66%,var(--navy) 66%,var(--navy) 100%);
+      z-index:3;
+    }
+
+    /* TAG en haut */
+    .hero-top-tag{
+      position:absolute;
+      top:clamp(5.5rem,10vh,7rem);
+      left:50%;transform:translateX(-50%);
+      white-space:nowrap;
+      font-size:0.68rem;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;
+      color:var(--gold-light);
+      display:flex;align-items:center;gap:0.8rem;
+      z-index:2;
+      text-shadow:0 1px 6px rgba(0,0,0,0.5);
+    }
+    .hero-top-tag::before,.hero-top-tag::after{
+      content:'★';font-size:0.6rem;color:var(--gold);opacity:0.85;
+    }
+
+    /* Layout principal : 3 colonnes */
+    .hero-inner{
+      position:relative;z-index:2;
+      display:grid;
+      grid-template-columns:1fr auto 1fr;
+      align-items:center;
+      gap:0;
+      width:100%;
+      max-width:1300px;
+      padding:8rem clamp(2rem,5vw,5rem) 6rem;
+    }
+
+    /* ---- Colonne gauche ---- */
+    .hero-col-left{
+      text-align:right;
+      padding-right:clamp(2rem,4vw,4rem);
+      display:flex;flex-direction:column;align-items:flex-end;
+    }
+
+    .hero-cat-item{ margin-bottom:1.8rem; }
+    .hero-cat-item:last-child{margin-bottom:0;}
+
+    .hero-cat-title{
+      font-family:var(--font-display);
+      font-size:clamp(1rem,1.8vw,1.3rem);
+      font-weight:700;
+      color:#FFFFFF;
+      margin-bottom:0.2rem;
+      line-height:1.2;
+      text-shadow:0 2px 8px rgba(0,0,0,0.4);
+    }
+    .hero-cat-desc{
+      font-size:0.78rem;
+      color:rgba(230,235,255,0.82);
+      line-height:1.5;
+      max-width:220px;
+      text-shadow:0 1px 4px rgba(0,0,0,0.4);
+    }
+    .hero-cat-dot{
+      width:8px;height:8px;border-radius:50%;
+      margin-left:auto;margin-top:0.5rem;
+      flex-shrink:0;
+    }
+
+    /* ---- Logo central ---- */
+    .hero-logo-zone{
+      position:relative;
+      display:flex;align-items:center;justify-content:center;
+      flex-shrink:0;
+      width:clamp(320px,28vw,420px);
+      height:clamp(320px,28vw,420px);
+    }
+
+    /* Anneaux concentriques — plus visibles sur photo */
+    .hero-ring{
+      position:absolute;border-radius:50%;
+      border:1px solid rgba(212,165,42,0.45);
+    }
+    .hero-ring-1{ width:100%;height:100%; }
+    .hero-ring-2{ width:84%;height:84%;border-color:rgba(212,165,42,0.30); }
+    .hero-ring-3{ width:68%;height:68%;border:1px dashed rgba(255,255,255,0.25); }
+
+    .hero-orb{ position:absolute;border-radius:50%;z-index:3; }
+
+    /* Cercle blanc du logo — légèrement agrandi et ombre plus marquée sur photo */
+    .hero-logo-circle{
+      width:clamp(220px,19vw,295px);
+      height:clamp(220px,19vw,295px);
+      border-radius:50%;
+      background:#FFFFFF;
+      box-shadow:
+        0 0 0 3px rgba(212,165,42,0.35),
+        0 0 0 6px rgba(255,255,255,0.12),
+        0 16px 70px rgba(0,0,0,0.35),
+        0 4px 20px rgba(0,0,0,0.20);
+      display:flex;align-items:center;justify-content:center;
+      position:relative;z-index:2;
+      animation:floatLogo 4s ease-in-out infinite;
+    }
+    .hero-logo-circle img{ width:88%;height:88%;object-fit:contain; }
+    @keyframes floatLogo{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+
+    /* ---- Colonne droite ---- */
+    .hero-col-right{
+      text-align:left;
+      padding-left:clamp(2rem,4vw,4rem);
+      display:flex;flex-direction:column;align-items:flex-start;
+    }
+
+    /* Grand titre — blanc sur photo */
+    .hero-main-title{
+      font-family:var(--font-display);
+      font-size:clamp(2.2rem,4vw,3.2rem);
+      font-weight:900;
+      color:#FFFFFF;
+      line-height:1.05;
+      margin-bottom:0.6rem;
+      text-shadow:0 2px 12px rgba(0,0,0,0.45);
+    }
+    .hero-main-title em{
+      font-style:italic;font-weight:700;
+      color:var(--gold-light);display:block;
+    }
+
+    .hero-main-sub{
+      font-family:var(--font-italic);
+      font-style:italic;
+      font-size:clamp(0.95rem,1.5vw,1.15rem);
+      color:rgba(230,235,255,0.88);
+      line-height:1.7;
+      margin-bottom:1.5rem;
+      max-width:260px;
+      text-shadow:0 1px 6px rgba(0,0,0,0.4);
+    }
+
+    .hero-divider{
+      width:36px;height:2px;
+      background:linear-gradient(90deg,var(--red),var(--gold));
+      margin-bottom:1.2rem;
+      border-radius:1px;
+    }
+
+    .hero-flags-row{
+      display:flex;flex-direction:column;gap:0.35rem;
+      margin-bottom:2rem;
+      font-size:0.78rem;font-weight:600;
+      color:rgba(220,230,255,0.82);
+      text-shadow:0 1px 4px rgba(0,0,0,0.4);
+    }
+    .hero-flags-row span{
+      display:flex;align-items:center;gap:0.5rem;
+    }
+    .hero-flags-row span::before{
+      content:'';display:block;
+      width:5px;height:5px;border-radius:50%;
+      background:var(--gold);flex-shrink:0;
+    }
+
+    /* Boutons */
+    .btn-primary{
+      display:inline-flex;align-items:center;gap:0.5rem;
+      background:var(--red);color:var(--white);
+      font-family:var(--font-body);font-size:0.8rem;font-weight:800;
+      letter-spacing:0.1em;text-transform:uppercase;
+      padding:0.9rem 2rem;border:none;cursor:pointer;border-radius:2px;
+      transition:background 0.3s,transform 0.2s;
+    }
+    .btn-primary:hover{background:var(--gold);color:var(--navy-dark);transform:translateY(-2px);}
+    .btn-outline{
+      display:inline-flex;align-items:center;gap:0.5rem;
+      background:rgba(255,255,255,0.12);
+      color:#FFFFFF;
+      font-family:var(--font-body);font-size:0.8rem;font-weight:700;
+      letter-spacing:0.1em;text-transform:uppercase;
+      padding:0.9rem 2rem;
+      border:1.5px solid rgba(255,255,255,0.45);
+      cursor:pointer;border-radius:2px;
+      backdrop-filter:blur(4px);
+      transition:background 0.3s,border-color 0.3s;
+    }
+    .btn-outline:hover{background:rgba(255,255,255,0.22);border-color:var(--gold-light);color:var(--gold-light);}
+    .hero-actions{display:flex;gap:1rem;flex-wrap:wrap;}
+
+    /* Boutons du bas centrés */
+    .hero-bottom-actions{
+      position:absolute;
+      bottom:clamp(3rem,6vh,4.5rem);
+      left:50%;transform:translateX(-50%);
+      display:flex;gap:1rem;
+      z-index:3;
+    }
+
+    .hero-wave{position:absolute;bottom:-1px;left:0;right:0;}
+
+    /* Responsive */
+    @media(max-width:900px){
+      #hero{background-attachment:scroll;}
+      .hero-inner{grid-template-columns:1fr;grid-template-rows:auto auto auto;text-align:center;padding-top:7rem;}
+      .hero-col-left,.hero-col-right{align-items:center;text-align:center;padding:0;order:2;}
+      .hero-col-left{order:3;}
+      .hero-logo-zone{order:1;margin:0 auto;width:min(320px,80vw);height:min(320px,80vw);}
+      .hero-logo-circle{width:min(220px,55vw);height:min(220px,55vw);}
+      .hero-cat-dot{margin-left:auto;margin-right:auto;}
+      .hero-cat-desc{margin:0 auto;}
+      .hero-main-sub{margin:0 auto 1.5rem;}
+      .hero-flags-row{align-items:center;}
+      .hero-top-tag{font-size:0.6rem;white-space:normal;text-align:center;max-width:80%;left:50%;transform:translateX(-50%);}
+      .hero-bottom-actions{position:relative;bottom:auto;left:auto;transform:none;margin-top:2rem;justify-content:center;}
+    }
+
+    /* ===================== PHOTO BANNER DÉFILANT ===================== */
+    .photo-banner{
+      background:var(--navy-dark);
+      padding:0;
+      overflow:hidden;
+      position:relative;
+    }
+    /* Fondu sur les bords */
+    .photo-banner::before,
+    .photo-banner::after{
+      content:'';position:absolute;top:0;bottom:0;width:160px;z-index:2;pointer-events:none;
+    }
+    .photo-banner::before{left:0;background:linear-gradient(to right,var(--navy-dark),transparent);}
+    .photo-banner::after{right:0;background:linear-gradient(to left,var(--navy-dark),transparent);}
+
+    .photo-track{
+      display:flex;gap:0;
+      animation:photoScroll 40s linear infinite;
+      width:max-content;
+    }
+    .photo-track:hover{animation-play-state:paused;}
+    @keyframes photoScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+    .photo-slide{
+      flex-shrink:0;
+      width:340px;
+      height:280px;
+      overflow:hidden;
+      position:relative;
+      cursor:pointer;
+      border-right:3px solid var(--navy-dark);
+      transition:transform 0.4s cubic-bezier(.23,1,.32,1);
+    }
+    .photo-slide:hover{transform:scaleY(1.04);z-index:1;}
+
+    .photo-slide-inner{
+      width:100%;height:100%;
+      display:flex;align-items:center;justify-content:center;
+      font-family:var(--font-italic);font-style:italic;
+      font-size:0.9rem;color:rgba(255,255,255,0.45);
+      transition:transform 0.6s cubic-bezier(.23,1,.32,1);
+    }
+    .photo-slide:hover .photo-slide-inner{transform:scale(1.07);}
+
+    .ps-dessert { background:linear-gradient(145deg,#1B2F6E,#2A4A9E); }
+    .ps-gateau  { background:linear-gradient(145deg,#8B1010,#D42B2B); }
+    .ps-sale    { background:linear-gradient(145deg,#004F2D,#006B3F); }
+    .ps-plat    { background:linear-gradient(145deg,#0F1D47,#243882); }
+    .ps-fruit   { background:linear-gradient(145deg,#8B6914,#D4A52A); }
+
+    .photo-slide-label{
+      position:absolute;bottom:0;left:0;right:0;
+      background:linear-gradient(to top,rgba(0,0,0,0.8) 0%,transparent 100%);
+      padding:2.5rem 1rem 0.8rem;
+      font-family:var(--font-body);font-size:0.72rem;font-weight:800;
+      letter-spacing:0.1em;text-transform:uppercase;color:var(--white);
+      opacity:0;transition:opacity 0.35s;
+    }
+    .photo-slide:hover .photo-slide-label{opacity:1;}
+
+    /* ===================== SECTION BASE ===================== */
+    section{padding:var(--section-pad) 0;}
+    .container{max-width:1200px;margin:0 auto;padding:0 clamp(1.5rem,5vw,4rem);}
+    .section-label{font-family:var(--font-body);font-size:0.7rem;font-weight:800;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem;}
+    .section-label::before{content:'';display:block;width:2rem;height:2px;background:var(--red);border-radius:2px;}
+    .section-label.gold{color:var(--gold);}
+    .section-label.gold::before{background:var(--gold);}
+    .section-title{font-family:var(--font-display);font-size:clamp(2rem,4vw,3rem);font-weight:900;color:var(--navy);line-height:1.15;}
+    .section-title em{font-style:italic;font-weight:700;color:var(--red);}
+    .section-title.light{color:var(--white);}
+    .section-title.light em{color:var(--gold-light);}
+
+    /* ===================== HISTOIRE ===================== */
+    #histoire{background:var(--off-white);}
+    .histoire-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+    .histoire-img-wrapper{position:relative;}
+    .histoire-img-main{width:100%;aspect-ratio:4/5;background:linear-gradient(160deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:4px;display:flex;align-items:flex-end;padding:1.5rem;font-family:var(--font-italic);font-style:italic;color:rgba(255,255,255,0.3);font-size:0.9rem;position:relative;overflow:hidden;}
+    .histoire-img-main::before{content:'';position:absolute;bottom:0;left:0;right:0;height:40%;background:linear-gradient(to top,rgba(212,43,43,0.3),transparent);}
+    .histoire-accent-box{position:absolute;bottom:-1.5rem;right:-1.5rem;width:50%;aspect-ratio:1;background:var(--gold);border-radius:4px;z-index:-1;}
+    .histoire-flag-badge{position:absolute;top:1.2rem;right:-1rem;background:var(--white);border-radius:50px;padding:0.5rem 1rem;box-shadow:0 4px 20px rgba(0,0,0,0.15);font-size:0.75rem;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:0.4rem;}
+    .histoire-text{font-size:1rem;line-height:1.85;color:var(--text-soft);margin-top:1.5rem;}
+    .histoire-text p+p{margin-top:1rem;}
+    .histoire-text strong{color:var(--navy);font-weight:700;}
+    .histoire-text em{font-family:var(--font-italic);font-style:italic;font-size:1.1em;color:var(--red);}
+    .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem;padding-top:2rem;border-top:2px solid rgba(27,47,110,0.1);}
+    .stat-item{text-align:center;}
+    .stat-num{font-family:var(--font-display);font-size:2.2rem;font-weight:900;color:var(--navy);display:block;}
+    .stat-label{font-size:0.7rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-soft);opacity:0.7;margin-top:0.3rem;}
+
+    /* ===================== CRÉATIONS (5 catégories) ===================== */
+    #creations{background:var(--white);}
+    .creations-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;gap:2rem;}
+    .creations-intro{max-width:380px;font-size:1rem;line-height:1.7;color:var(--text-soft);margin-top:0.8rem;}
+
+    /* Grille 5 cartes : 3 + 2 centrées */
+    .categories-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:1.5rem;
+    }
+    .categories-grid .cat-card:nth-child(4){
+      grid-column:1/2;
+      margin-left:calc(50% + 0.75rem);
+      grid-column: 1;
+    }
+
+    /* On fait 3 puis 2 centrées via sous-grille */
+    .cat-row-1{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-bottom:1.5rem;}
+    .cat-row-2{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;max-width:calc(66.66% + 0.5rem);margin:0 auto;}
+
+    .cat-card{border-radius:8px;overflow:hidden;background:var(--white);box-shadow:0 2px 24px rgba(27,47,110,0.08);transition:transform 0.35s cubic-bezier(.23,1,.32,1),box-shadow 0.35s;}
+    .cat-card:hover{transform:translateY(-8px);box-shadow:0 24px 60px rgba(27,47,110,0.16);}
+    /* Lien sur carte */
+    .cat-card a.card-link{display:block;color:inherit;text-decoration:none;}
+
+    .cat-img{aspect-ratio:3/4;position:relative;overflow:hidden;}
+    .cat-img-inner{width:100%;height:100%;transition:transform 0.6s cubic-bezier(.23,1,.32,1);display:flex;align-items:center;justify-content:center;font-family:var(--font-italic);font-style:italic;font-size:0.85rem;color:rgba(255,255,255,0.4);}
+    .cat-card:hover .cat-img-inner{transform:scale(1.07);}
+    .cat-img-inner.desserts{background:linear-gradient(160deg,var(--navy),#2A4A9E);}
+    .cat-img-inner.gateaux {background:linear-gradient(160deg,var(--red),#8B1010);}
+    .cat-img-inner.sales   {background:linear-gradient(160deg,var(--green),var(--navy));}
+    .cat-img-inner.plats   {background:linear-gradient(160deg,var(--navy-dark),var(--navy-mid));}
+    .cat-img-inner.fruits  {background:linear-gradient(160deg,#8B6914,var(--gold));}
+
+    .cat-badge{position:absolute;top:0.8rem;left:0.8rem;background:var(--gold);color:var(--navy-dark);font-size:0.63rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;padding:0.25rem 0.65rem;border-radius:100px;}
+    .cat-icon{position:absolute;bottom:0.8rem;right:0.8rem;font-size:1.8rem;}
+
+    /* Overlay "Voir les créations" au hover */
+    .cat-overlay{position:absolute;inset:0;background:rgba(15,29,71,0.7);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.35s;}
+    .cat-card:hover .cat-overlay{opacity:1;}
+    .cat-overlay-btn{background:var(--gold);color:var(--navy-dark);font-family:var(--font-body);font-size:0.75rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;padding:0.7rem 1.4rem;border-radius:2px;}
+
+    .cat-body{padding:1.3rem;}
+    .cat-title{font-family:var(--font-display);font-size:1.15rem;font-weight:700;color:var(--navy);margin-bottom:0.45rem;}
+    .cat-desc{font-size:0.83rem;line-height:1.65;color:var(--text-soft);}
+    .cat-tag{display:flex;align-items:center;gap:0.4rem;margin-top:0.9rem;font-size:0.67rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--red);border-top:1px solid rgba(27,47,110,0.08);padding-top:0.8rem;}
+
+    /* ===================== COMMANDE ===================== */
+    #commande{background:var(--navy-dark);position:relative;overflow:hidden;}
+    #commande::before{content:'';position:absolute;right:-15rem;top:-15rem;width:50rem;height:50rem;border-radius:50%;border:1px solid rgba(212,165,42,0.08);pointer-events:none;}
+    #commande::after{content:'';position:absolute;right:-10rem;top:-10rem;width:38rem;height:38rem;border-radius:50%;border:1px solid rgba(212,165,42,0.05);pointer-events:none;}
+    .commande-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;}
+    .steps-list{display:flex;flex-direction:column;gap:0.8rem;margin-top:2.5rem;}
+    .step{display:flex;gap:1.2rem;align-items:flex-start;padding:1.3rem;background:rgba(250,250,248,0.04);border:1px solid rgba(250,250,248,0.07);border-left:3px solid var(--red);transition:background 0.3s;}
+    .step:nth-child(2){border-left-color:var(--gold);}
+    .step:nth-child(3){border-left-color:var(--green-light);}
+    .step:hover{background:rgba(250,250,248,0.07);}
+    .step-num{font-family:var(--font-display);font-size:1.5rem;font-weight:900;color:rgba(212,165,42,0.3);line-height:1;flex-shrink:0;min-width:1.8rem;}
+    .step-title{font-size:0.85rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;color:var(--white);margin-bottom:0.3rem;}
+    .step-desc{font-size:0.85rem;color:rgba(250,250,248,0.58);line-height:1.5;}
+    .modes-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;position:relative;z-index:1;}
+    .mode-card{background:rgba(250,250,248,0.05);border:1px solid rgba(250,250,248,0.1);border-radius:6px;padding:1.8rem 1.4rem;text-align:center;transition:background 0.3s,border-color 0.3s;}
+    .mode-card:hover{background:rgba(212,165,42,0.08);border-color:rgba(212,165,42,0.3);}
+    .mode-icon{font-size:2.4rem;margin-bottom:0.8rem;}
+    .mode-title{font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--white);margin-bottom:0.5rem;}
+    .mode-desc{font-size:0.82rem;color:rgba(250,250,248,0.55);line-height:1.55;}
+    .mode-card.wide{grid-column:1/-1;border-radius:0;border-left:3px solid var(--gold);}
+
+    /* ===================== CONTACT ===================== */
+    #contact{background:var(--light-blue);}
+    .contact-inner{display:grid;grid-template-columns:5fr 7fr;gap:5rem;align-items:start;}
+    .contact-quote{font-family:var(--font-italic);font-style:italic;font-size:clamp(1.2rem,2.2vw,1.6rem);font-weight:300;color:var(--navy);line-height:1.55;margin-top:1.5rem;}
+    .contact-quote strong{color:var(--red);font-style:normal;font-weight:600;}
+    .contact-perks{margin-top:2.5rem;display:flex;flex-direction:column;gap:0.8rem;}
+    .contact-perk{display:flex;align-items:center;gap:1rem;padding:0.9rem 1.2rem;background:var(--white);border-radius:6px;border-left:3px solid var(--navy);font-size:0.88rem;font-weight:600;color:var(--navy);}
+    .contact-perk:nth-child(2){border-left-color:var(--red);}
+    .contact-perk:nth-child(3){border-left-color:var(--gold);}
+    .contact-form{background:var(--white);padding:2.5rem;border-radius:8px;box-shadow:0 8px 50px rgba(27,47,110,0.1);}
+    .form-header{display:flex;align-items:center;gap:0.8rem;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:2px solid var(--light-blue);}
+    .form-header-icon{width:2.5rem;height:2.5rem;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+    .form-header-title{font-family:var(--font-display);font-size:1.3rem;font-weight:700;color:var(--navy);}
+    .form-header-sub{font-size:0.78rem;color:var(--text-soft);margin-top:0.1rem;}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+    .form-group{display:flex;flex-direction:column;gap:0.4rem;margin-bottom:1.1rem;}
+    .form-label{font-size:0.7rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--navy);opacity:0.7;}
+    .req{color:var(--red);}
+    .form-input,.form-select,.form-textarea{width:100%;padding:0.75rem 1rem;background:var(--off-white);border:1.5px solid transparent;border-radius:4px;font-family:var(--font-body);font-size:0.92rem;color:var(--text);outline:none;transition:border-color 0.25s,box-shadow 0.25s,background 0.25s;appearance:none;}
+    .form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--navy);background:var(--white);box-shadow:0 0 0 3px rgba(27,47,110,0.1);}
+    .form-textarea{resize:vertical;min-height:110px;}
+    .form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231B2F6E' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;background-size:12px;padding-right:2.5rem;cursor:pointer;}
+    .form-hint{font-size:0.73rem;color:var(--text-soft);opacity:0.6;}
+    .form-submit{width:100%;padding:1rem;background:var(--navy);color:var(--white);border:none;font-family:var(--font-body);font-size:0.82rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;border-radius:4px;margin-top:0.5rem;transition:background 0.3s,transform 0.2s;}
+    .form-submit:hover{background:var(--red);transform:translateY(-2px);}
+    .form-success{display:none;text-align:center;padding:3rem 2rem;}
+    .form-success.visible{display:block;}
+    .success-icon{font-size:3.5rem;margin-bottom:1rem;}
+    .success-title{font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:var(--navy);margin-bottom:0.5rem;}
+    .success-text{color:var(--text-soft);font-size:0.95rem;line-height:1.7;}
+
+    /* ===================== FOOTER ===================== */
+    footer{background:var(--navy-dark);padding:3rem 0 0;}
+    .footer-stripe{height:6px;background:linear-gradient(90deg,var(--red) 0%,var(--red) 33.3%,var(--white) 33.3%,var(--white) 66.6%,var(--navy) 66.6%,var(--navy) 100%);margin-bottom:2.5rem;}
+    .footer-main{display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;padding-bottom:2.5rem;}
+    .footer-brand-logo{width:70px;height:70px;object-fit:contain;margin-bottom:1rem;}
+    .footer-brand-name{font-family:var(--font-display);font-size:1.3rem;font-weight:900;color:var(--white);}
+    .footer-brand-tagline{font-family:var(--font-italic);font-style:italic;font-size:0.82rem;color:rgba(250,250,248,0.4);margin-top:0.3rem;}
+    .footer-brand-desc{font-size:0.85rem;color:rgba(250,250,248,0.42);line-height:1.7;margin-top:1rem;}
+    .footer-col-title{font-size:0.7rem;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;}
+    .footer-col-links{display:flex;flex-direction:column;gap:0.6rem;}
+    .footer-col-links a{font-size:0.85rem;color:rgba(250,250,248,0.52);transition:color 0.2s;}
+    .footer-col-links a:hover{color:var(--white);}
+    .footer-bottom{border-top:1px solid rgba(250,250,248,0.08);padding:1.2rem 0;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+    .footer-copy{font-size:0.75rem;color:rgba(250,250,248,0.28);}
+    .footer-made{font-size:0.75rem;color:rgba(250,250,248,0.22);}
+
+    /* ===================== REVEAL ===================== */
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity 0.65s ease,transform 0.65s ease;}
+    .reveal.visible{opacity:1;transform:none;}
+    .reveal-delay-1{transition-delay:0.1s;}
+    .reveal-delay-2{transition-delay:0.2s;}
+    .reveal-delay-3{transition-delay:0.3s;}
+    .reveal-delay-4{transition-delay:0.4s;}
+
+    /* ===================== RESPONSIVE ===================== */
+    @media(max-width:1100px){
+      .cat-row-2{max-width:100%;}
+    }
+    @media(max-width:1024px){
+      .cat-row-1{grid-template-columns:repeat(2,1fr);}
+      .cat-row-2{grid-template-columns:repeat(2,1fr);max-width:100%;}
+      .histoire-inner,.commande-inner{gap:3rem;}
+      .footer-main{grid-template-columns:1fr 1fr;}
+    }
+    @media(max-width:768px){
+      nav{padding:0;}
+      .nav-links{display:none;}
+      .burger{display:flex;}
+      .histoire-inner,.commande-inner,.contact-inner{grid-template-columns:1fr;gap:2.5rem;}
+      .histoire-accent-box,.histoire-flag-badge{display:none;}
+      .creations-top{flex-direction:column;align-items:flex-start;}
+      .cat-row-1,.cat-row-2{grid-template-columns:1fr;max-width:100%;}
+      .form-row{grid-template-columns:1fr;}
+      .contact-form{padding:1.8rem 1.3rem;}
+      .footer-main{grid-template-columns:1fr;gap:2rem;}
+      .footer-bottom{flex-direction:column;align-items:flex-start;}
+    }
+    @media(max-width:480px){
+      .modes-grid{grid-template-columns:1fr;}
+      .stats-row{grid-template-columns:1fr 1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <img src="images/logo.png" alt="Sabor Criola"/>
+    <div class="nav-logo-text">Sabor Criola<span>Serviço Traiteur</span></div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#histoire">Notre histoire</a></li>
+    <li><a href="#creations">Nos créations</a></li>
+    <li><a href="#commande">Commander</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+  <div class="burger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+
+<div id="mobileMenu">
+  <a href="#histoire" onclick="closeMenu()">Notre histoire</a>
+  <a href="#creations" onclick="closeMenu()">Nos créations</a>
+  <a href="#commande" onclick="closeMenu()">Commander</a>
+  <a href="#contact" onclick="closeMenu()" style="color:var(--gold)">Nous contacter</a>
+</div>
+
+
+<!-- HERO -->
+<section id="hero">
+
+  <!-- Tag centré en haut -->
+  <div class="hero-top-tag">Especialidades Caboverdianas e Portuguesas</div>
+
+  <div class="hero-inner">
+
+    <!-- COLONNE GAUCHE : titre principal + sous-titre + drapeaux -->
+    <div class="hero-col-left">
+      <h1 class="hero-main-title">
+        Des saveurs<br>
+        <em>du cœur</em>
+      </h1>
+      <p class="hero-main-sub">Pâtisseries, gâteaux, salés et plats préparés façonnés à la main avec passion.</p>
+      <div class="hero-divider"></div>
+      <div class="hero-flags-row">
+        <span>🇨🇻 Spécialités cap-verdiennes</span>
+        <span>🇵🇹 Spécialités portugaises</span>
+        <span>100% Fait maison</span>
+      </div>
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">Passer une commande</a>
+        <a href="#creations" class="btn-outline">Nos créations</a>
+      </div>
+    </div>
+
+    <!-- LOGO CENTRAL avec anneaux -->
+    <div class="hero-logo-zone">
+      <!-- Anneaux concentriques -->
+      <div class="hero-ring hero-ring-1"></div>
+      <div class="hero-ring hero-ring-2"></div>
+      <div class="hero-ring hero-ring-3"></div>
+      <!-- Orbes colorés sur les anneaux -->
+      <div class="hero-orb" style="width:12px;height:12px;background:var(--gold);top:1.5%;left:50%;transform:translateX(-50%);"></div>
+      <div class="hero-orb" style="width:10px;height:10px;background:var(--red);bottom:2%;left:50%;transform:translateX(-50%);"></div>
+      <div class="hero-orb" style="width:10px;height:10px;background:var(--navy);top:50%;left:1%;transform:translateY(-50%);"></div>
+      <div class="hero-orb" style="width:10px;height:10px;background:var(--gold);top:50%;right:1%;transform:translateY(-50%);"></div>
+      <div class="hero-orb" style="width:7px;height:7px;background:var(--red);top:14%;left:14%;"></div>
+      <div class="hero-orb" style="width:7px;height:7px;background:var(--gold);top:14%;right:14%;"></div>
+      <div class="hero-orb" style="width:7px;height:7px;background:var(--navy);bottom:14%;left:14%;"></div>
+      <div class="hero-orb" style="width:7px;height:7px;background:var(--red);bottom:14%;right:14%;"></div>
+      <!-- Cercle blanc contenant le logo -->
+      <div class="hero-logo-circle">
+        <img src="images/logo.png" alt="Sabor Criola"/>
+      </div>
+    </div>
+
+    <!-- COLONNE DROITE : 3 catégories -->
+    <div class="hero-col-right">
+      <div class="hero-cat-item">
+        <div class="hero-cat-title">🎂 Gâteaux & Desserts</div>
+        <div class="hero-cat-desc">Créations personnalisées et douceurs traditionnelles pour chaque occasion.</div>
+        <div class="hero-cat-dot" style="background:var(--red);"></div>
+      </div>
+      <div class="hero-cat-item">
+        <div class="hero-cat-title">🥐 Salés & Plats préparés</div>
+        <div class="hero-cat-desc">Pastéis, croquettes, cachupa et plats du terroir cuisinés avec soin.</div>
+        <div class="hero-cat-dot" style="background:var(--gold);"></div>
+      </div>
+      <div class="hero-cat-item">
+        <div class="hero-cat-title">🍓 Fruits & Plateaux</div>
+        <div class="hero-cat-desc">Plateaux colorés et brochettes soigneusement préparés pour vos réceptions.</div>
+        <div class="hero-cat-dot" style="background:var(--navy);"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Vague de transition vers le photo banner -->
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 55" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,28 C360,56 1080,0 1440,28 L1440,55 L0,55 Z" fill="var(--navy-dark)"/>
+    </svg>
+  </div>
+
+</section>
+
+
+<!-- PHOTO BANNER DÉFILANT -->
+<div class="photo-banner">
+  <div class="photo-track" id="photoTrack">
+    <!-- Desserts -->
+    <div class="photo-slide"><div class="photo-slide-inner ps-dessert">Photo dessert 1<div class="photo-slide-label">Desserts</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-gateau">Photo gâteau 1<div class="photo-slide-label">Gâteaux</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-fruit">Photo fruits 1<div class="photo-slide-label">Fruits</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-sale">Photo salé 1<div class="photo-slide-label">Salés</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-plat">Photo plat 1<div class="photo-slide-label">Plats</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-dessert">Photo dessert 2<div class="photo-slide-label">Desserts</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-gateau">Photo gâteau 2<div class="photo-slide-label">Gâteaux</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-fruit">Photo fruits 2<div class="photo-slide-label">Fruits</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-sale">Photo salé 2<div class="photo-slide-label">Salés</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-plat">Photo plat 2<div class="photo-slide-label">Plats</div></div></div>
+    <!-- Duplicate for seamless loop -->
+    <div class="photo-slide"><div class="photo-slide-inner ps-dessert">Photo dessert 1<div class="photo-slide-label">Desserts</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-gateau">Photo gâteau 1<div class="photo-slide-label">Gâteaux</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-fruit">Photo fruits 1<div class="photo-slide-label">Fruits</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-sale">Photo salé 1<div class="photo-slide-label">Salés</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-plat">Photo plat 1<div class="photo-slide-label">Plats</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-dessert">Photo dessert 2<div class="photo-slide-label">Desserts</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-gateau">Photo gâteau 2<div class="photo-slide-label">Gâteaux</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-fruit">Photo fruits 2<div class="photo-slide-label">Fruits</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-sale">Photo salé 2<div class="photo-slide-label">Salés</div></div></div>
+    <div class="photo-slide"><div class="photo-slide-inner ps-plat">Photo plat 2<div class="photo-slide-label">Plats</div></div></div>
+  </div>
+</div>
+
+
+<!-- HISTOIRE -->
+<section id="histoire">
+  <div class="container">
+    <div class="histoire-inner">
+      <div class="histoire-img-wrapper reveal">
+        <div class="histoire-img-main" style="padding:0;background:none;">
+          <img src="images/tia_su.png" alt="La cuisinière de Sabor Criola" style="width:100%;height:100%;object-fit:cover;object-position:center top;border-radius:4px;display:block;"/>
+        </div>
+        <div class="histoire-accent-box"></div>
+        <div class="histoire-flag-badge">🇨🇻 🇵🇹 Deux cultures, un amour</div>
+      </div>
+      <div>
+        <p class="section-label reveal">Notre histoire</p>
+        <h2 class="section-title reveal reveal-delay-1">Née d'une <em>passion</em><br>venue de l'Atlantique</h2>
+        <div class="histoire-text reveal reveal-delay-2">
+          <p><strong>Sabor Criola</strong>, c'est l'histoire d'une cuisine familiale transmise de génération en génération, entre les archipels du <em>Cap-Vert</em> et les côtes du Portugal.</p>
+          <p>Chaque gâteau, chaque plat est préparé à la main, avec des ingrédients soigneusement choisis et des recettes authentiques. Pas de production en série — seulement du fait avec cœur, pour chaque commande.</p>
+        </div>
+        <div class="stats-row reveal reveal-delay-3">
+          <div class="stat-item"><span class="stat-num">100%</span><span class="stat-label">Fait maison</span></div>
+          <div class="stat-item"><span class="stat-num">2</span><span class="stat-label">Cultures culinaires</span></div>
+          <div class="stat-item"><span class="stat-num">♥</span><span class="stat-label">Avec passion</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CRÉATIONS — 5 catégories -->
+<section id="creations">
+  <div class="container">
+    <div class="creations-top">
+      <div>
+        <p class="section-label reveal">Nos créations</p>
+        <h2 class="section-title reveal reveal-delay-1">Une cuisine <em>entre deux mondes</em></h2>
+        <p class="creations-intro reveal reveal-delay-2">Recettes du Cap-Vert et du Portugal, préparées avec savoir-faire et générosité. Toutes les commandes sont sur mesure.</p>
+      </div>
+    </div>
+
+    <!-- Ligne 1 : 3 cartes -->
+    <div class="cat-row-1">
+      <div class="cat-card reveal">
+        <a href="desserts.html" class="card-link">
+          <div class="cat-img">
+            <div class="cat-img-inner desserts">Photo desserts</div>
+            <div class="cat-badge">Cap-Vert & Portugal</div>
+            <div class="cat-icon">🍮</div>
+            <div class="cat-overlay"><div class="cat-overlay-btn">Voir les créations →</div></div>
+          </div>
+          <div class="cat-body">
+            <h3 class="cat-title">Desserts</h3>
+            <p class="cat-desc">Pudim, pastéis de nata, doces de coco capverdiens et douceurs qui font voyager à chaque bouchée.</p>
+            <div class="cat-tag">✦ Spécialités traditionnelles</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="cat-card reveal reveal-delay-1">
+        <a href="gateaux.html" class="card-link">
+          <div class="cat-img">
+            <div class="cat-img-inner gateaux">Photo gâteaux</div>
+            <div class="cat-badge">Personnalisés</div>
+            <div class="cat-icon">🎂</div>
+            <div class="cat-overlay"><div class="cat-overlay-btn">Voir les créations →</div></div>
+          </div>
+          <div class="cat-body">
+            <h3 class="cat-title">Gâteaux</h3>
+            <p class="cat-desc">Gâteaux d'anniversaire et pièces personnalisées — réalisés selon vos envies et l'occasion.</p>
+            <div class="cat-tag">✦ Sur commande</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="cat-card reveal reveal-delay-2">
+        <a href="sales.html" class="card-link">
+          <div class="cat-img">
+            <div class="cat-img-inner sales">Photo salés</div>
+            <div class="cat-badge">Apéritif & buffet</div>
+            <div class="cat-icon">🥐</div>
+            <div class="cat-overlay"><div class="cat-overlay-btn">Voir les créations →</div></div>
+          </div>
+          <div class="cat-body">
+            <h3 class="cat-title">Salés</h3>
+            <p class="cat-desc">Pastéis de bacalhau, croquettes, bolinhos — parfaits pour vos apéros et réceptions.</p>
+            <div class="cat-tag">✦ Idéal pour réceptions</div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Ligne 2 : 2 cartes centrées -->
+    <div class="cat-row-2">
+      <div class="cat-card reveal">
+        <a href="plats.html" class="card-link">
+          <div class="cat-img">
+            <div class="cat-img-inner plats">Photo plats</div>
+            <div class="cat-badge">Tradition</div>
+            <div class="cat-icon">🍲</div>
+            <div class="cat-overlay"><div class="cat-overlay-btn">Voir les créations →</div></div>
+          </div>
+          <div class="cat-body">
+            <h3 class="cat-title">Plats préparés</h3>
+            <p class="cat-desc">Cachupa, feijoada, caldo verde — les grands classiques préparés avec soin et générosité.</p>
+            <div class="cat-tag">✦ Plats du terroir</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="cat-card reveal reveal-delay-1">
+        <a href="fruits.html" class="card-link">
+          <div class="cat-img">
+            <div class="cat-img-inner fruits">Photo fruits</div>
+            <div class="cat-badge">Plateaux & Brochettes</div>
+            <div class="cat-icon">🍓</div>
+            <div class="cat-overlay"><div class="cat-overlay-btn">Voir les créations →</div></div>
+          </div>
+          <div class="cat-body">
+            <h3 class="cat-title">Fruits</h3>
+            <p class="cat-desc">Plateaux de fruits et brochettes soigneusement préparés — colorés, frais et élégants pour toutes les occasions.</p>
+            <div class="cat-tag">✦ Frais & sur mesure</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- COMMANDE -->
+<section id="commande">
+  <div class="container">
+    <div class="commande-inner">
+      <div>
+        <p class="section-label gold reveal">Comment commander</p>
+        <h2 class="section-title light reveal reveal-delay-1">Simple,<br><em>rapide</em> et fait<br>pour vous</h2>
+        <div class="steps-list reveal reveal-delay-2">
+          <div class="step"><div class="step-num">01</div><div><div class="step-title">Envoyez votre demande</div><div class="step-desc">Remplissez le formulaire de contact avec vos envies et l'occasion prévue.</div></div></div>
+          <div class="step"><div class="step-num">02</div><div><div class="step-title">On affine ensemble</div><div class="step-desc">On vous répond sous 24–48h pour discuter des détails et établir un devis.</div></div></div>
+          <div class="step"><div class="step-num">03</div><div><div class="step-title">Récupérez & dégustez</div><div class="step-desc">Votre commande préparée avec amour, prête pour votre table ou votre événement.</div></div></div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <p class="section-label gold" style="margin-bottom:1.5rem;">Modes de récupération</p>
+        <div class="modes-grid">
+          <div class="mode-card"><div class="mode-icon">🏠</div><div class="mode-title">Retrait</div><div class="mode-desc">Venez chercher votre commande en main propre. Créneau à convenir ensemble.</div></div>
+          <div class="mode-card"><div class="mode-icon">🚗</div><div class="mode-title">Livraison</div><div class="mode-desc">Livraison possible selon votre localisation. À confirmer lors de la commande.</div></div>
+          <div class="mode-card wide">
+            <div style="display:flex;gap:1rem;align-items:flex-start;">
+              <div style="font-size:1.6rem;flex-shrink:0;">📅</div>
+              <div><div class="mode-title" style="text-align:left;margin-bottom:0.3rem;">Commandez à l'avance</div><div class="mode-desc" style="text-align:left;">Prévoyez quelques jours pour les gâteaux et plats préparés. Contactez-nous le plus tôt possible pour les grandes occasions.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div>
+        <p class="section-label reveal">Contact</p>
+        <h2 class="section-title reveal reveal-delay-1">Parlons de<br>votre <em>commande</em></h2>
+        <p class="contact-quote reveal reveal-delay-2">Dites-nous l'occasion, vos envies…<br><strong>on s'occupe du reste.</strong></p>
+        <div class="contact-perks reveal reveal-delay-3">
+          <div class="contact-perk"><span>✉️</span> Réponse sous 24–48h</div>
+          <div class="contact-perk"><span>📍</span> Retrait & livraison zone locale</div>
+          <div class="contact-perk"><span>💬</span> Prix sur devis personnalisé</div>
+        </div>
+      </div>
+      <div class="contact-form reveal reveal-delay-2">
+        <div class="form-header">
+          <div class="form-header-icon">📝</div>
+          <div><div class="form-header-title">Envoyer une demande</div><div class="form-header-sub">Les champs * sont obligatoires</div></div>
+        </div>
+        <div id="formFields">
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Prénom <span class="req">*</span></label><input class="form-input" id="prenom" type="text" placeholder="Marie" required/></div>
+            <div class="form-group"><label class="form-label">Nom <span class="req">*</span></label><input class="form-input" id="nom" type="text" placeholder="Dupont" required/></div>
+          </div>
+          <div class="form-group"><label class="form-label">Email <span class="req">*</span></label><input class="form-input" id="email" type="email" placeholder="marie@email.com" required/></div>
+          <div class="form-group"><label class="form-label">Téléphone</label><input class="form-input" type="tel" placeholder="+33 6 00 00 00 00"/></div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">Type de commande <span class="req">*</span></label>
+              <select class="form-select" id="categorie" required>
+                <option value="">— Choisir —</option>
+                <option>Desserts</option><option>Gâteau personnalisé</option>
+                <option>Salés / Apéritif</option><option>Plats préparés</option>
+                <option>Fruits / Plateaux</option><option>Commande mixte</option>
+              </select>
+            </div>
+            <div class="form-group"><label class="form-label">Occasion</label>
+              <select class="form-select">
+                <option value="">— Événement (optionnel) —</option>
+                <option>Anniversaire</option><option>Mariage</option>
+                <option>Réception / Fête</option><option>Repas en famille</option><option>Autre</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group"><label class="form-label">Votre demande <span class="req">*</span></label>
+            <textarea class="form-textarea" id="message" placeholder="Décrivez votre commande : quantité, saveurs souhaitées, date prévue…" required></textarea>
+            <p class="form-hint">Plus vous êtes précis, mieux nous pouvons vous conseiller et établir le devis.</p>
+          </div>
+          <div class="form-group"><label class="form-label">Mode de récupération</label>
+            <select class="form-select">
+              <option>Retrait en main propre</option>
+              <option>Livraison (à confirmer)</option>
+              <option>Je ne sais pas encore</option>
+            </select>
+          </div>
+          <button class="form-submit" onclick="submitForm()">Envoyer ma demande →</button>
+        </div>
+        <div class="form-success" id="formSuccess">
+          <div class="success-icon">🎉</div>
+          <div class="success-title">Merci !</div>
+          <p class="success-text">Votre demande a bien été envoyée. Nous vous répondrons dans les 24 à 48 heures.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-stripe"></div>
+  <div class="container">
+    <div class="footer-main">
+      <div>
+        <img src="images/logo.png" alt="Sabor Criola" class="footer-brand-logo"/>
+        <div class="footer-brand-name">Sabor Criola</div>
+        <div class="footer-brand-tagline">Especialidades Caboverdianas e Portuguesas</div>
+        <p class="footer-brand-desc">Des saveurs authentiques préparées à la main avec passion. Pâtisseries, gâteaux, salés, plats préparés et plateaux de fruits sur commande.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigation</div>
+        <div class="footer-col-links">
+          <a href="#histoire">Notre histoire</a>
+          <a href="#creations">Nos créations</a>
+          <a href="#commande">Comment commander</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Nos spécialités</div>
+        <div class="footer-col-links">
+          <a href="desserts.html">Desserts</a>
+          <a href="gateaux.html">Gâteaux sur mesure</a>
+          <a href="sales.html">Salés & apéritif</a>
+          <a href="plats.html">Plats préparés</a>
+          <a href="fruits.html">Fruits & plateaux</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Sabor Criola — Tous droits réservés</div>
+      <div class="footer-made">Serviço Traiteur · Fait avec ♥</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll',()=>navbar.classList.toggle('scrolled',window.scrollY>60));
+  function toggleMenu(){const m=document.getElementById('mobileMenu');m.style.display=m.style.display==='flex'?'none':'flex';}
+  function closeMenu(){document.getElementById('mobileMenu').style.display='none';}
+  const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');observer.unobserve(e.target);}});},{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+  function submitForm(){
+    const ids=['prenom','nom','email','categorie','message'];
+    let ok=true;
+    ids.forEach(id=>{const el=document.getElementById(id);if(el&&!el.value.trim()){el.style.borderColor='var(--red)';el.style.boxShadow='0 0 0 3px rgba(212,43,43,0.15)';ok=false;el.addEventListener('input',()=>{el.style.borderColor='';el.style.boxShadow='';},{once:true});}});
+    if(!ok)return;
+    document.getElementById('formFields').style.display='none';
+    document.getElementById('formSuccess').classList.add('visible');
+  }
+</script>
+</body>
+</html>
