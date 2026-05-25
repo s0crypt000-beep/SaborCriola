@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <circle cx="16" cy="16" r="16" fill="#D4A52A"/>
+  <circle cx="16" cy="16" r="13.5" fill="#1B2F6E"/>
+  <circle cx="16" cy="16" r="12.5" fill="none" stroke="#D4A52A" stroke-width="0.6" opacity="0.6"/>
+  <text x="16" y="21.5" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-weight="700" font-size="13.5" fill="#D4A52A" letter-spacing="0.5">SC</text>
+</svg>
